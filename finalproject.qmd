@@ -60,7 +60,7 @@ health_long <- health |>
 ```
 Because the variable name started with a number, "X" was added before each year automatically by R. As a consequence, the year was changed into a categorical variable. Thus, after pivoting, I removed the "X" from each year and converted it into an integer.
 
-Otherwise, no other data needed to be cleaned
+Otherwise, no other data needed to be cleaned here.
 
 ## Join data
 ```{r}
