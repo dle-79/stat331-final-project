@@ -1,0 +1,70 @@
+---
+title: "STAT331 Final Project"
+author: "David Ballester, Dylan Le, Nathan Spiess, Tyler Stoen"
+format: 
+  html:
+    self-contained: true
+    code-tools: true
+    toc: true
+    number-sections: true
+editor: source
+execute: 
+  error: true
+  echo: true
+  message: false
+  warning: false
+---
+
+## Load packages
+```{r}
+library(tidyverse)
+library(here)
+```
+
+## Github operations
+```{r}
+library(usethis)
+library(gitcreds)
+use_git_config(user.name = "dle79", user.email = "dle79@calpoly.edu")
+create_github_token()
+gitcreds_set()
+git_sitrep()
+```
+
+## Read in data
+```{r}
+age <- read.csv(here::here("final-project", "median_age_years.csv"))
+health <- read.csv(here::here("final-project", "total_health_spending_per_person_us.csv"))
+```
+Total health spending / person USD:
+The average amount spent per person in USD for every country from 1994 to 2009 according to the World Health Organization.
+
+Median Age:
+The median age of the total population in each country since 1949. It also includes predicted median age until 2099.
+
+We expect the relationship between average spending per person and median age to be positive because as the population becomes increasingly older on average, people will require more medical attention.
+
+## Pivot and Clean Data
+```{r}
+age_long <- age |>
+  pivot_longer(cols = X1949:X2099,
+               names_to = "year",
+               values_to = "median_age") |>
+  mutate(year = as.integer(str_sub(year, 2)))
+
+health_long <- health |>
+  pivot_longer(cols = X1994:X2009,
+               names_to = "year",
+               values_to = "healthCost") |>
+  mutate(year = as.integer(str_sub(year, 2)))
+```
+Because the variable name started with a number, "X" was added before each year automatically by R. As a consequence, the year was changed into a categorical variable. Thus, after pivoting, I removed the "X" from each year and converted it into an integer.
+
+Otherwise, no other data needed to be cleaned
+
+## Join data
+```{r}
+ageHealth <- health_long |>
+  left_join(age_long, by = c("country", "year"))
+```
+We decided to perform a left join between health_long and age_long, since the total health spending has less observation, and in turn, decrease the amount of missing values.
