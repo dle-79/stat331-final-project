@@ -81,7 +81,7 @@ model <- lm(healthCost ~ median_age,
             data = ageHealth)
 
 ```
-
+We are fitting a linear relationship using median age to predict total health spending per person. So the x variable is median age and the y variable is total health spending.
 ```{r}
 library(broom)
 tidy(model)
@@ -90,3 +90,7 @@ augment(model) |>
   geom_point() +
   geom_jitter()
 ```
+Model:
+total health spending / person = -1745 + 95.4(median age)
+
+For every one year increase in median age, there is a 95.4 USD increase in total health spending per person.
