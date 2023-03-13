@@ -14,20 +14,6 @@ execute:
   message: false
   warning: false
 ---
-Written Components:
-- Detailed data and variable description
-- Hypothesized relationship (and any outside references)
-- Data cleaning process and decisions
-
-Total health spending / person USD:
-The average amount spent per person in USD for every country from 1994 to 2009 according to the World Health Organization.
-
-Median Age:
-The median age of the total population in each country since 1949. It also includes predicted median age until 2099.
-
-We expect the relationship between average spending per person and median age to be positive because as the population becomes increasingly older on average, people will require more medical attention. We would also expect both the total health spending per person and the median age to increase with time.
-
-For our age dataset, there was no cleaning required as there were no missing values or outlying values. All that was required for this data set was a pivot and then a merge with the health data set. 
 
 ## Load packages
 ```{r}
@@ -50,13 +36,15 @@ git_sitrep()
 age <- read.csv(here::here("final-project", "median_age_years.csv"))
 health <- read.csv(here::here("final-project", "total_health_spending_per_person_us.csv"))
 ```
-Total health spending / person USD:
-The average amount spent per person in USD for every country from 1994 to 2009 according to the World Health Organization.
+We will be using the two quantitative variables Total health spending per person in USD and median age.
 
-Median Age:
-The median age of the total population in each country since 1949. It also includes predicted median age until 2099.
+Our response variable will be Total health spending / person USD which can be described as the average amount spent per person in USD for every country from 1994 to 2009 according to the World Health Organization.
 
-We expect the relationship between average spending per person and median age to be positive because as the population becomes increasingly older on average, people will require more medical attention.
+Our observational variable will be the median age of the total population in each country since 1949. It also includes predicted median age until 2099.
+
+We expect the relationship between average spending per person and median age to be positive because as the population becomes increasingly older on average, people will require more medical attention. We would also expect both the total health spending per person and the median age to increase with time.
+
+For our age dataset, there was no cleaning required as there were no missing values or outlying values. All that was required for this data set was a pivot and then a merge with the health data set. 
 
 ## Pivot and Clean Data
 ```{r}
@@ -82,3 +70,23 @@ ageHealth <- health_long |>
   left_join(age_long, by = c("country", "year"))
 ```
 We decided to perform a left join between health_long and age_long, since the total health spending has less observation, and in turn, decrease the amount of missing values.
+
+
+
+
+
+## Fitting a Simple Linear Model (Part 2.2)
+```{r}
+model <- lm(healthCost ~ median_age,
+            data = ageHealth)
+
+```
+
+```{r}
+library(broom)
+tidy(model)
+augment(model) |>
+  ggplot(aes(x = median_age, y = .resid)) +
+  geom_point() +
+  geom_jitter()
+```
