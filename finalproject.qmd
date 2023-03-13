@@ -72,7 +72,35 @@ ageHealth <- health_long |>
 We decided to perform a left join between health_long and age_long, since the total health spending has less observation, and in turn, decrease the amount of missing values.
 
 
+## 2.1 Data Visualization Part One
+```{r}
+ageHealth |>
+  ggplot(aes(y=healthCost,
+             x=median_age)) +
+  geom_jitter(width = 0.25, height = 0.5) +
+  labs(title = "Total Health Spending vs. Median Age From 1994-2009",
+       subtitle = "Health Spending",
+       x = "Median Age",
+       y = "") +
+  theme_bw()
+```
+Based on the scatter plot above, our assumption was correct and there does appear to be a positive correlation between amount spent on health and median age. As the median age increases, the average amount spent on health does as well. Although the correlation appears to be positive, it does not appear linear.
 
+## 2.1 Data Visualization Part Two
+```{r}
+ageHealth |>
+  ggplot(aes(y=healthCost,
+             x=median_age,
+             color=year)) +
+  geom_jitter(width = 0.25, height = 0.5) + 
+  labs(title = "Total Health Spending vs. Median Age From 1994-2009",
+       subtitle = "Health Spending",
+       x = "Median Age",
+       y = "",
+       color = "Year:") +
+  theme_bw()
+```
+After coloring by year, we can see that within each of the shades of blue, the correlation appears to be pretty similar, so the relationship between amount spent on health and median age has not changed much form 1994-2009. 
 
 
 ## Fitting a Simple Linear Model (Part 2.2)
