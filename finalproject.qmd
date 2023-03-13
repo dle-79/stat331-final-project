@@ -1,5 +1,5 @@
 ---
-title: "STAT331 Final Project"
+title: "Effect of Median Age on Total Health Spending"
 author: "David Ballester, Dylan Le, Nathan Spiess, Tyler Stoen"
 format: 
   html:
@@ -7,6 +7,7 @@ format:
     code-tools: true
     toc: true
     number-sections: true
+    code-fold: true
 editor: source
 execute: 
   error: true
@@ -21,30 +22,18 @@ library(tidyverse)
 library(here)
 ```
 
-## Github operations
-```{r}
-library(usethis)
-library(gitcreds)
-use_git_config(user.name = "dle79", user.email = "dle79@calpoly.edu")
-create_github_token()
-gitcreds_set()
-git_sitrep()
-```
-
 ## Read in data
 ```{r}
-age <- read.csv(here::here("final-project", "median_age_years.csv"))
-health <- read.csv(here::here("final-project", "total_health_spending_per_person_us.csv"))
+age <- read.csv(here::here("stat331-final-project", "median_age_years.csv"))
+health <- read.csv(here::here("stat331-final-project", "total_health_spending_per_person_us.csv"))
 ```
-We will be using the two quantitative variables Total health spending per person in USD and median age.
+We will be using the two quantitative variables Total health spending per person in USD and median age, all of which came from Gapminder.
 
 Our response variable will be Total health spending / person USD which can be described as the average amount spent per person in USD for every country from 1994 to 2009 according to the World Health Organization.
 
 Our observational variable will be the median age of the total population in each country since 1949. It also includes predicted median age until 2099.
 
 We expect the relationship between average spending per person and median age to be positive because as the population becomes increasingly older on average, people will require more medical attention. We would also expect both the total health spending per person and the median age to increase with time.
-
-For our age dataset, there was no cleaning required as there were no missing values or outlying values. All that was required for this data set was a pivot and then a merge with the health data set. 
 
 ## Pivot and Clean Data
 ```{r}
@@ -110,6 +99,7 @@ model <- lm(healthCost ~ median_age,
 
 ```
 We are fitting a linear relationship using median age to predict total health spending per person. So the x variable is median age and the y variable is total health spending.
+
 ```{r}
 library(broom)
 tidy(model)
@@ -119,6 +109,22 @@ augment(model) |>
   geom_jitter()
 ```
 Model:
-total health spending / person = -1745 + 95.4(median age)
+predicted total health spending / person = -1745 + 95.4(median age)
 
 For every one year increase in median age, there is a 95.4 USD increase in total health spending per person.
+
+## Model Fit (2.3)
+```{r}
+library(moderndive)
+var <- model |>
+  get_regression_points() |>
+  summarize(SSTotal = var(healthCost),
+            SSModel = var(healthCost_hat),
+            SSError = var(residual))
+
+knitr::kable(var, "html",
+             caption = "Variance of Model",
+              col.names = c("SSTotal", "SSModel", "SSError"),
+             )
+```
+In the table, we can see that 604462.2/1490797 * 100 = 40.5% of the variation in Health Costs is explained by the median age of the country. The R^2^ value is moderately large, which indicates our model has an adequate fit when comparing total healthcare costs and median age.
