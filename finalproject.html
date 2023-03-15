@@ -2672,11 +2672,10 @@ vertical-align: -.125em;
 <pre><code>Error in file(file, &quot;rt&quot;): cannot open the connection</code></pre>
 </div>
 </div>
-<p>We will be using the two quantitative variables Total health spending per person in USD and median age.</p>
+<p>We will be using the two quantitative variables Total health spending per person in USD and median age, all of which came from Gapminder.</p>
 <p>Our response variable will be Total health spending / person USD which can be described as the average amount spent per person in USD for every country from 1994 to 2009 according to the World Health Organization.</p>
 <p>Our observational variable will be the median age of the total population in each country since 1949. It also includes predicted median age until 2099.</p>
 <p>We expect the relationship between average spending per person and median age to be positive because as the population becomes increasingly older on average, people will require more medical attention. We would also expect both the total health spending per person and the median age to increase with time.</p>
-<p>For our age dataset, there was no cleaning required as there were no missing values or outlying values. All that was required for this data set was a pivot and then a merge with the health data set.</p>
 </section>
 <section id="pivot-and-clean-data" class="level2" data-number="3">
 <h2 data-number="3" class="anchored" data-anchor-id="pivot-and-clean-data"><span class="header-section-number">3</span> Pivot and Clean Data</h2>
@@ -2806,22 +2805,28 @@ vertical-align: -.125em;
 <div class="cell">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(moderndive)</span>
-<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>var <span class="ot">&lt;-</span> model <span class="sc">|&gt;</span></span>
-<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">get_regression_points</span>() <span class="sc">|&gt;</span></span>
-<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">SSTotal =</span> <span class="fu">var</span>(healthCost),</span>
-<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>            <span class="at">SSModel =</span> <span class="fu">var</span>(healthCost_hat),</span>
-<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>            <span class="at">SSError =</span> <span class="fu">var</span>(residual))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(moderndive)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-error">
-<pre><code>Error in input_checks(model, digits, print): object &#39;model&#39; not found</code></pre>
+<pre><code>Error in library(moderndive): there is no package called &#39;moderndive&#39;</code></pre>
 </div>
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(var, <span class="st">&quot;html&quot;</span>,</span>
-<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>             <span class="at">caption =</span> <span class="st">&quot;Variance of Model&quot;</span>,</span>
-<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>              <span class="at">col.names =</span> <span class="fu">c</span>(<span class="st">&quot;SSTotal&quot;</span>, <span class="st">&quot;SSModel&quot;</span>, <span class="st">&quot;SSError&quot;</span>),</span>
-<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>             )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>var <span class="ot">&lt;-</span> model <span class="sc">|&gt;</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">get_regression_points</span>() <span class="sc">|&gt;</span></span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">SSTotal =</span> <span class="fu">var</span>(healthCost),</span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>            <span class="at">SSModel =</span> <span class="fu">var</span>(healthCost_hat),</span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>            <span class="at">SSError =</span> <span class="fu">var</span>(residual))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-error">
+<pre><code>Error in get_regression_points(model): could not find function &quot;get_regression_points&quot;</code></pre>
+</div>
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(var, <span class="st">&quot;html&quot;</span>,</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>             <span class="at">caption =</span> <span class="st">&quot;Variance of Model&quot;</span>,</span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>              <span class="at">col.names =</span> <span class="fu">c</span>(<span class="st">&quot;SSTotal&quot;</span>, <span class="st">&quot;SSModel&quot;</span>, <span class="st">&quot;SSError&quot;</span>),</span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>             )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-error">
 <pre><code>Error in as.data.frame.default(x): cannot coerce class &#39;&quot;function&quot;&#39; to a data.frame</code></pre>
@@ -3018,138 +3023,136 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   }
 });
 </script><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class>
-<div class="sourceCode" id="cb26" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
-<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> &quot;Effect of Median Age on Total Health Spending&quot;</span></span>
-<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a><span class="an">author:</span><span class="co"> &quot;David Ballester, Dylan Le, Nathan Spiess, Tyler Stoen&quot;</span></span>
-<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a><span class="an">format:</span><span class="co"> </span></span>
-<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a><span class="co">  html:</span></span>
-<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a><span class="co">    self-contained: true</span></span>
-<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a><span class="co">    code-tools: true</span></span>
-<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a><span class="co">    toc: true</span></span>
-<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a><span class="co">    number-sections: true</span></span>
-<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a><span class="co">    code-fold: true</span></span>
-<span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a><span class="an">editor:</span><span class="co"> source</span></span>
-<span id="cb26-12"><a href="#cb26-12" aria-hidden="true" tabindex="-1"></a><span class="an">execute:</span><span class="co"> </span></span>
-<span id="cb26-13"><a href="#cb26-13" aria-hidden="true" tabindex="-1"></a><span class="co">  error: true</span></span>
-<span id="cb26-14"><a href="#cb26-14" aria-hidden="true" tabindex="-1"></a><span class="co">  echo: true</span></span>
-<span id="cb26-15"><a href="#cb26-15" aria-hidden="true" tabindex="-1"></a><span class="co">  message: false</span></span>
-<span id="cb26-16"><a href="#cb26-16" aria-hidden="true" tabindex="-1"></a><span class="co">  warning: false</span></span>
-<span id="cb26-17"><a href="#cb26-17" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
-<span id="cb26-18"><a href="#cb26-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-19"><a href="#cb26-19" aria-hidden="true" tabindex="-1"></a><span class="fu">## Load packages</span></span>
-<span id="cb26-22"><a href="#cb26-22" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb26-23"><a href="#cb26-23" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb26-24"><a href="#cb26-24" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(here)</span>
-<span id="cb26-25"><a href="#cb26-25" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb26-26"><a href="#cb26-26" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-27"><a href="#cb26-27" aria-hidden="true" tabindex="-1"></a><span class="fu">## Read in data</span></span>
-<span id="cb26-30"><a href="#cb26-30" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb26-31"><a href="#cb26-31" aria-hidden="true" tabindex="-1"></a>age <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(here<span class="sc">::</span><span class="fu">here</span>(<span class="st">&quot;stat331-final-project&quot;</span>, <span class="st">&quot;median_age_years.csv&quot;</span>))</span>
-<span id="cb26-32"><a href="#cb26-32" aria-hidden="true" tabindex="-1"></a>health <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(here<span class="sc">::</span><span class="fu">here</span>(<span class="st">&quot;stat331-final-project&quot;</span>, <span class="st">&quot;total_health_spending_per_person_us.csv&quot;</span>))</span>
-<span id="cb26-33"><a href="#cb26-33" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb26-34"><a href="#cb26-34" aria-hidden="true" tabindex="-1"></a>We will be using the two quantitative variables Total health spending per person in USD and median age.</span>
-<span id="cb26-35"><a href="#cb26-35" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-36"><a href="#cb26-36" aria-hidden="true" tabindex="-1"></a>Our response variable will be Total health spending / person USD which can be described as the average amount spent per person in USD for every country from 1994 to 2009 according to the World Health Organization.</span>
-<span id="cb26-37"><a href="#cb26-37" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-38"><a href="#cb26-38" aria-hidden="true" tabindex="-1"></a>Our observational variable will be the median age of the total population in each country since 1949. It also includes predicted median age until 2099.</span>
-<span id="cb26-39"><a href="#cb26-39" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-40"><a href="#cb26-40" aria-hidden="true" tabindex="-1"></a>We expect the relationship between average spending per person and median age to be positive because as the population becomes increasingly older on average, people will require more medical attention. We would also expect both the total health spending per person and the median age to increase with time.</span>
-<span id="cb26-41"><a href="#cb26-41" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-42"><a href="#cb26-42" aria-hidden="true" tabindex="-1"></a>For our age dataset, there was no cleaning required as there were no missing values or outlying values. All that was required for this data set was a pivot and then a merge with the health data set. </span>
-<span id="cb26-43"><a href="#cb26-43" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-44"><a href="#cb26-44" aria-hidden="true" tabindex="-1"></a><span class="fu">## Pivot and Clean Data</span></span>
-<span id="cb26-47"><a href="#cb26-47" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb26-48"><a href="#cb26-48" aria-hidden="true" tabindex="-1"></a>age_long <span class="ot">&lt;-</span> age <span class="sc">|&gt;</span></span>
-<span id="cb26-49"><a href="#cb26-49" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="at">cols =</span> X1949<span class="sc">:</span>X2099,</span>
-<span id="cb26-50"><a href="#cb26-50" aria-hidden="true" tabindex="-1"></a>               <span class="at">names_to =</span> <span class="st">&quot;year&quot;</span>,</span>
-<span id="cb26-51"><a href="#cb26-51" aria-hidden="true" tabindex="-1"></a>               <span class="at">values_to =</span> <span class="st">&quot;median_age&quot;</span>) <span class="sc">|&gt;</span></span>
-<span id="cb26-52"><a href="#cb26-52" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">year =</span> <span class="fu">as.integer</span>(<span class="fu">str_sub</span>(year, <span class="dv">2</span>)))</span>
-<span id="cb26-53"><a href="#cb26-53" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-54"><a href="#cb26-54" aria-hidden="true" tabindex="-1"></a>health_long <span class="ot">&lt;-</span> health <span class="sc">|&gt;</span></span>
-<span id="cb26-55"><a href="#cb26-55" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="at">cols =</span> X1994<span class="sc">:</span>X2009,</span>
-<span id="cb26-56"><a href="#cb26-56" aria-hidden="true" tabindex="-1"></a>               <span class="at">names_to =</span> <span class="st">&quot;year&quot;</span>,</span>
-<span id="cb26-57"><a href="#cb26-57" aria-hidden="true" tabindex="-1"></a>               <span class="at">values_to =</span> <span class="st">&quot;healthCost&quot;</span>) <span class="sc">|&gt;</span></span>
-<span id="cb26-58"><a href="#cb26-58" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">year =</span> <span class="fu">as.integer</span>(<span class="fu">str_sub</span>(year, <span class="dv">2</span>)))</span>
-<span id="cb26-59"><a href="#cb26-59" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb26-60"><a href="#cb26-60" aria-hidden="true" tabindex="-1"></a>Because the variable name started with a number, &quot;X&quot; was added before each year automatically by R. As a consequence, the year was changed into a categorical variable. Thus, after pivoting, I removed the &quot;X&quot; from each year and converted it into an integer.</span>
-<span id="cb26-61"><a href="#cb26-61" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-62"><a href="#cb26-62" aria-hidden="true" tabindex="-1"></a>Otherwise, no other data needed to be cleaned here.</span>
-<span id="cb26-63"><a href="#cb26-63" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-64"><a href="#cb26-64" aria-hidden="true" tabindex="-1"></a><span class="fu">## Join data</span></span>
-<span id="cb26-67"><a href="#cb26-67" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb26-68"><a href="#cb26-68" aria-hidden="true" tabindex="-1"></a>ageHealth <span class="ot">&lt;-</span> health_long <span class="sc">|&gt;</span></span>
-<span id="cb26-69"><a href="#cb26-69" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(age_long, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">&quot;country&quot;</span>, <span class="st">&quot;year&quot;</span>))</span>
-<span id="cb26-70"><a href="#cb26-70" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb26-71"><a href="#cb26-71" aria-hidden="true" tabindex="-1"></a>We decided to perform a left join between health_long and age_long, since the total health spending has less observation, and in turn, decrease the amount of missing values.</span>
-<span id="cb26-72"><a href="#cb26-72" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-73"><a href="#cb26-73" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-74"><a href="#cb26-74" aria-hidden="true" tabindex="-1"></a><span class="fu">## 2.1 Data Visualization Part One</span></span>
-<span id="cb26-77"><a href="#cb26-77" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb26-78"><a href="#cb26-78" aria-hidden="true" tabindex="-1"></a>ageHealth <span class="sc">|&gt;</span></span>
-<span id="cb26-79"><a href="#cb26-79" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">y=</span>healthCost,</span>
-<span id="cb26-80"><a href="#cb26-80" aria-hidden="true" tabindex="-1"></a>             <span class="at">x=</span>median_age)) <span class="sc">+</span></span>
-<span id="cb26-81"><a href="#cb26-81" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_jitter</span>(<span class="at">width =</span> <span class="fl">0.25</span>, <span class="at">height =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
-<span id="cb26-82"><a href="#cb26-82" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Total Health Spending vs. Median Age From 1994-2009&quot;</span>,</span>
-<span id="cb26-83"><a href="#cb26-83" aria-hidden="true" tabindex="-1"></a>       <span class="at">subtitle =</span> <span class="st">&quot;Health Spending&quot;</span>,</span>
-<span id="cb26-84"><a href="#cb26-84" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">&quot;Median Age&quot;</span>,</span>
-<span id="cb26-85"><a href="#cb26-85" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">&quot;&quot;</span>) <span class="sc">+</span></span>
-<span id="cb26-86"><a href="#cb26-86" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span>
-<span id="cb26-87"><a href="#cb26-87" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb26-88"><a href="#cb26-88" aria-hidden="true" tabindex="-1"></a>Based on the scatter plot above, our assumption was correct and there does appear to be a positive correlation between amount spent on health and median age. As the median age increases, the average amount spent on health does as well. Although the correlation appears to be positive, it does not appear linear.</span>
-<span id="cb26-89"><a href="#cb26-89" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-90"><a href="#cb26-90" aria-hidden="true" tabindex="-1"></a><span class="fu">## 2.1 Data Visualization Part Two</span></span>
-<span id="cb26-93"><a href="#cb26-93" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb26-94"><a href="#cb26-94" aria-hidden="true" tabindex="-1"></a>ageHealth <span class="sc">|&gt;</span></span>
-<span id="cb26-95"><a href="#cb26-95" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">y=</span>healthCost,</span>
-<span id="cb26-96"><a href="#cb26-96" aria-hidden="true" tabindex="-1"></a>             <span class="at">x=</span>median_age,</span>
-<span id="cb26-97"><a href="#cb26-97" aria-hidden="true" tabindex="-1"></a>             <span class="at">color=</span>year)) <span class="sc">+</span></span>
-<span id="cb26-98"><a href="#cb26-98" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_jitter</span>(<span class="at">width =</span> <span class="fl">0.25</span>, <span class="at">height =</span> <span class="fl">0.5</span>) <span class="sc">+</span> </span>
-<span id="cb26-99"><a href="#cb26-99" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Total Health Spending vs. Median Age From 1994-2009&quot;</span>,</span>
-<span id="cb26-100"><a href="#cb26-100" aria-hidden="true" tabindex="-1"></a>       <span class="at">subtitle =</span> <span class="st">&quot;Health Spending&quot;</span>,</span>
-<span id="cb26-101"><a href="#cb26-101" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">&quot;Median Age&quot;</span>,</span>
-<span id="cb26-102"><a href="#cb26-102" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">&quot;&quot;</span>,</span>
-<span id="cb26-103"><a href="#cb26-103" aria-hidden="true" tabindex="-1"></a>       <span class="at">color =</span> <span class="st">&quot;Year:&quot;</span>) <span class="sc">+</span></span>
-<span id="cb26-104"><a href="#cb26-104" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span>
-<span id="cb26-105"><a href="#cb26-105" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb26-106"><a href="#cb26-106" aria-hidden="true" tabindex="-1"></a>After coloring by year, we can see that within each of the shades of blue, the correlation appears to be pretty similar, so the relationship between amount spent on health and median age has not changed much form 1994-2009. </span>
-<span id="cb26-107"><a href="#cb26-107" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-108"><a href="#cb26-108" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-109"><a href="#cb26-109" aria-hidden="true" tabindex="-1"></a><span class="fu">## Fitting a Simple Linear Model (Part 2.2)</span></span>
-<span id="cb26-112"><a href="#cb26-112" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb26-113"><a href="#cb26-113" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> <span class="fu">lm</span>(healthCost <span class="sc">~</span> median_age,</span>
-<span id="cb26-114"><a href="#cb26-114" aria-hidden="true" tabindex="-1"></a>            <span class="at">data =</span> ageHealth)</span>
-<span id="cb26-115"><a href="#cb26-115" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-116"><a href="#cb26-116" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb26-117"><a href="#cb26-117" aria-hidden="true" tabindex="-1"></a>We are fitting a linear relationship using median age to predict total health spending per person. So the x variable is median age and the y variable is total health spending.</span>
-<span id="cb26-118"><a href="#cb26-118" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-121"><a href="#cb26-121" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb26-122"><a href="#cb26-122" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(broom)</span>
-<span id="cb26-123"><a href="#cb26-123" aria-hidden="true" tabindex="-1"></a><span class="fu">tidy</span>(model)</span>
-<span id="cb26-124"><a href="#cb26-124" aria-hidden="true" tabindex="-1"></a><span class="fu">augment</span>(model) <span class="sc">|&gt;</span></span>
-<span id="cb26-125"><a href="#cb26-125" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> median_age, <span class="at">y =</span> .resid)) <span class="sc">+</span></span>
-<span id="cb26-126"><a href="#cb26-126" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
-<span id="cb26-127"><a href="#cb26-127" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_jitter</span>()</span>
-<span id="cb26-128"><a href="#cb26-128" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb26-129"><a href="#cb26-129" aria-hidden="true" tabindex="-1"></a>Model:</span>
-<span id="cb26-130"><a href="#cb26-130" aria-hidden="true" tabindex="-1"></a>predicted total health spending / person = -1745 + 95.4(median age)</span>
-<span id="cb26-131"><a href="#cb26-131" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-132"><a href="#cb26-132" aria-hidden="true" tabindex="-1"></a>For every one year increase in median age, there is a 95.4 USD increase in total health spending per person.</span>
-<span id="cb26-133"><a href="#cb26-133" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-134"><a href="#cb26-134" aria-hidden="true" tabindex="-1"></a><span class="fu">## Model Fit (2.3)</span></span>
-<span id="cb26-137"><a href="#cb26-137" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb26-138"><a href="#cb26-138" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(moderndive)</span>
-<span id="cb26-139"><a href="#cb26-139" aria-hidden="true" tabindex="-1"></a>var <span class="ot">&lt;-</span> model <span class="sc">|&gt;</span></span>
-<span id="cb26-140"><a href="#cb26-140" aria-hidden="true" tabindex="-1"></a>  <span class="fu">get_regression_points</span>() <span class="sc">|&gt;</span></span>
-<span id="cb26-141"><a href="#cb26-141" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">SSTotal =</span> <span class="fu">var</span>(healthCost),</span>
-<span id="cb26-142"><a href="#cb26-142" aria-hidden="true" tabindex="-1"></a>            <span class="at">SSModel =</span> <span class="fu">var</span>(healthCost_hat),</span>
-<span id="cb26-143"><a href="#cb26-143" aria-hidden="true" tabindex="-1"></a>            <span class="at">SSError =</span> <span class="fu">var</span>(residual))</span>
-<span id="cb26-144"><a href="#cb26-144" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-145"><a href="#cb26-145" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(var, <span class="st">&quot;html&quot;</span>,</span>
-<span id="cb26-146"><a href="#cb26-146" aria-hidden="true" tabindex="-1"></a>             <span class="at">caption =</span> <span class="st">&quot;Variance of Model&quot;</span>,</span>
-<span id="cb26-147"><a href="#cb26-147" aria-hidden="true" tabindex="-1"></a>              <span class="at">col.names =</span> <span class="fu">c</span>(<span class="st">&quot;SSTotal&quot;</span>, <span class="st">&quot;SSModel&quot;</span>, <span class="st">&quot;SSError&quot;</span>),</span>
-<span id="cb26-148"><a href="#cb26-148" aria-hidden="true" tabindex="-1"></a>             )</span>
-<span id="cb26-149"><a href="#cb26-149" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb26-150"><a href="#cb26-150" aria-hidden="true" tabindex="-1"></a>In the table, we can see that 604462.2/1490797 * 100 = 40.5% of the variation in Health Costs is explained by the median age of the country. The R^2^ value is moderately large, which indicates our model has an adequate fit when comparing total healthcare costs and median age.</span>
+<div class="sourceCode" id="cb28" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> &quot;Effect of Median Age on Total Health Spending&quot;</span></span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a><span class="an">author:</span><span class="co"> &quot;David Ballester, Dylan Le, Nathan Spiess, Tyler Stoen&quot;</span></span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a><span class="an">format:</span><span class="co"> </span></span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a><span class="co">  html:</span></span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a><span class="co">    self-contained: true</span></span>
+<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a><span class="co">    code-tools: true</span></span>
+<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a><span class="co">    toc: true</span></span>
+<span id="cb28-9"><a href="#cb28-9" aria-hidden="true" tabindex="-1"></a><span class="co">    number-sections: true</span></span>
+<span id="cb28-10"><a href="#cb28-10" aria-hidden="true" tabindex="-1"></a><span class="co">    code-fold: true</span></span>
+<span id="cb28-11"><a href="#cb28-11" aria-hidden="true" tabindex="-1"></a><span class="an">editor:</span><span class="co"> source</span></span>
+<span id="cb28-12"><a href="#cb28-12" aria-hidden="true" tabindex="-1"></a><span class="an">execute:</span><span class="co"> </span></span>
+<span id="cb28-13"><a href="#cb28-13" aria-hidden="true" tabindex="-1"></a><span class="co">  error: true</span></span>
+<span id="cb28-14"><a href="#cb28-14" aria-hidden="true" tabindex="-1"></a><span class="co">  echo: true</span></span>
+<span id="cb28-15"><a href="#cb28-15" aria-hidden="true" tabindex="-1"></a><span class="co">  message: false</span></span>
+<span id="cb28-16"><a href="#cb28-16" aria-hidden="true" tabindex="-1"></a><span class="co">  warning: false</span></span>
+<span id="cb28-17"><a href="#cb28-17" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb28-18"><a href="#cb28-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-19"><a href="#cb28-19" aria-hidden="true" tabindex="-1"></a><span class="fu">## Load packages</span></span>
+<span id="cb28-22"><a href="#cb28-22" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb28-23"><a href="#cb28-23" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb28-24"><a href="#cb28-24" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(here)</span>
+<span id="cb28-25"><a href="#cb28-25" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb28-26"><a href="#cb28-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-27"><a href="#cb28-27" aria-hidden="true" tabindex="-1"></a><span class="fu">## Read in data</span></span>
+<span id="cb28-30"><a href="#cb28-30" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb28-31"><a href="#cb28-31" aria-hidden="true" tabindex="-1"></a>age <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(here<span class="sc">::</span><span class="fu">here</span>(<span class="st">&quot;stat331-final-project&quot;</span>, <span class="st">&quot;median_age_years.csv&quot;</span>))</span>
+<span id="cb28-32"><a href="#cb28-32" aria-hidden="true" tabindex="-1"></a>health <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(here<span class="sc">::</span><span class="fu">here</span>(<span class="st">&quot;stat331-final-project&quot;</span>, <span class="st">&quot;total_health_spending_per_person_us.csv&quot;</span>))</span>
+<span id="cb28-33"><a href="#cb28-33" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb28-34"><a href="#cb28-34" aria-hidden="true" tabindex="-1"></a>We will be using the two quantitative variables Total health spending per person in USD and median age, all of which came from Gapminder.</span>
+<span id="cb28-35"><a href="#cb28-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-36"><a href="#cb28-36" aria-hidden="true" tabindex="-1"></a>Our response variable will be Total health spending / person USD which can be described as the average amount spent per person in USD for every country from 1994 to 2009 according to the World Health Organization.</span>
+<span id="cb28-37"><a href="#cb28-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-38"><a href="#cb28-38" aria-hidden="true" tabindex="-1"></a>Our observational variable will be the median age of the total population in each country since 1949. It also includes predicted median age until 2099.</span>
+<span id="cb28-39"><a href="#cb28-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-40"><a href="#cb28-40" aria-hidden="true" tabindex="-1"></a>We expect the relationship between average spending per person and median age to be positive because as the population becomes increasingly older on average, people will require more medical attention. We would also expect both the total health spending per person and the median age to increase with time.</span>
+<span id="cb28-41"><a href="#cb28-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-42"><a href="#cb28-42" aria-hidden="true" tabindex="-1"></a><span class="fu">## Pivot and Clean Data</span></span>
+<span id="cb28-45"><a href="#cb28-45" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb28-46"><a href="#cb28-46" aria-hidden="true" tabindex="-1"></a>age_long <span class="ot">&lt;-</span> age <span class="sc">|&gt;</span></span>
+<span id="cb28-47"><a href="#cb28-47" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="at">cols =</span> X1949<span class="sc">:</span>X2099,</span>
+<span id="cb28-48"><a href="#cb28-48" aria-hidden="true" tabindex="-1"></a>               <span class="at">names_to =</span> <span class="st">&quot;year&quot;</span>,</span>
+<span id="cb28-49"><a href="#cb28-49" aria-hidden="true" tabindex="-1"></a>               <span class="at">values_to =</span> <span class="st">&quot;median_age&quot;</span>) <span class="sc">|&gt;</span></span>
+<span id="cb28-50"><a href="#cb28-50" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">year =</span> <span class="fu">as.integer</span>(<span class="fu">str_sub</span>(year, <span class="dv">2</span>)))</span>
+<span id="cb28-51"><a href="#cb28-51" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-52"><a href="#cb28-52" aria-hidden="true" tabindex="-1"></a>health_long <span class="ot">&lt;-</span> health <span class="sc">|&gt;</span></span>
+<span id="cb28-53"><a href="#cb28-53" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="at">cols =</span> X1994<span class="sc">:</span>X2009,</span>
+<span id="cb28-54"><a href="#cb28-54" aria-hidden="true" tabindex="-1"></a>               <span class="at">names_to =</span> <span class="st">&quot;year&quot;</span>,</span>
+<span id="cb28-55"><a href="#cb28-55" aria-hidden="true" tabindex="-1"></a>               <span class="at">values_to =</span> <span class="st">&quot;healthCost&quot;</span>) <span class="sc">|&gt;</span></span>
+<span id="cb28-56"><a href="#cb28-56" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">year =</span> <span class="fu">as.integer</span>(<span class="fu">str_sub</span>(year, <span class="dv">2</span>)))</span>
+<span id="cb28-57"><a href="#cb28-57" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb28-58"><a href="#cb28-58" aria-hidden="true" tabindex="-1"></a>Because the variable name started with a number, &quot;X&quot; was added before each year automatically by R. As a consequence, the year was changed into a categorical variable. Thus, after pivoting, I removed the &quot;X&quot; from each year and converted it into an integer.</span>
+<span id="cb28-59"><a href="#cb28-59" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-60"><a href="#cb28-60" aria-hidden="true" tabindex="-1"></a>Otherwise, no other data needed to be cleaned here.</span>
+<span id="cb28-61"><a href="#cb28-61" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-62"><a href="#cb28-62" aria-hidden="true" tabindex="-1"></a><span class="fu">## Join data</span></span>
+<span id="cb28-65"><a href="#cb28-65" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb28-66"><a href="#cb28-66" aria-hidden="true" tabindex="-1"></a>ageHealth <span class="ot">&lt;-</span> health_long <span class="sc">|&gt;</span></span>
+<span id="cb28-67"><a href="#cb28-67" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(age_long, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">&quot;country&quot;</span>, <span class="st">&quot;year&quot;</span>))</span>
+<span id="cb28-68"><a href="#cb28-68" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb28-69"><a href="#cb28-69" aria-hidden="true" tabindex="-1"></a>We decided to perform a left join between health_long and age_long, since the total health spending has less observation, and in turn, decrease the amount of missing values.</span>
+<span id="cb28-70"><a href="#cb28-70" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-71"><a href="#cb28-71" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-72"><a href="#cb28-72" aria-hidden="true" tabindex="-1"></a><span class="fu">## 2.1 Data Visualization Part One</span></span>
+<span id="cb28-75"><a href="#cb28-75" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb28-76"><a href="#cb28-76" aria-hidden="true" tabindex="-1"></a>ageHealth <span class="sc">|&gt;</span></span>
+<span id="cb28-77"><a href="#cb28-77" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">y=</span>healthCost,</span>
+<span id="cb28-78"><a href="#cb28-78" aria-hidden="true" tabindex="-1"></a>             <span class="at">x=</span>median_age)) <span class="sc">+</span></span>
+<span id="cb28-79"><a href="#cb28-79" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_jitter</span>(<span class="at">width =</span> <span class="fl">0.25</span>, <span class="at">height =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
+<span id="cb28-80"><a href="#cb28-80" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Total Health Spending vs. Median Age From 1994-2009&quot;</span>,</span>
+<span id="cb28-81"><a href="#cb28-81" aria-hidden="true" tabindex="-1"></a>       <span class="at">subtitle =</span> <span class="st">&quot;Health Spending&quot;</span>,</span>
+<span id="cb28-82"><a href="#cb28-82" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">&quot;Median Age&quot;</span>,</span>
+<span id="cb28-83"><a href="#cb28-83" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">&quot;&quot;</span>) <span class="sc">+</span></span>
+<span id="cb28-84"><a href="#cb28-84" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span>
+<span id="cb28-85"><a href="#cb28-85" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb28-86"><a href="#cb28-86" aria-hidden="true" tabindex="-1"></a>Based on the scatter plot above, our assumption was correct and there does appear to be a positive correlation between amount spent on health and median age. As the median age increases, the average amount spent on health does as well. Although the correlation appears to be positive, it does not appear linear.</span>
+<span id="cb28-87"><a href="#cb28-87" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-88"><a href="#cb28-88" aria-hidden="true" tabindex="-1"></a><span class="fu">## 2.1 Data Visualization Part Two</span></span>
+<span id="cb28-91"><a href="#cb28-91" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb28-92"><a href="#cb28-92" aria-hidden="true" tabindex="-1"></a>ageHealth <span class="sc">|&gt;</span></span>
+<span id="cb28-93"><a href="#cb28-93" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">y=</span>healthCost,</span>
+<span id="cb28-94"><a href="#cb28-94" aria-hidden="true" tabindex="-1"></a>             <span class="at">x=</span>median_age,</span>
+<span id="cb28-95"><a href="#cb28-95" aria-hidden="true" tabindex="-1"></a>             <span class="at">color=</span>year)) <span class="sc">+</span></span>
+<span id="cb28-96"><a href="#cb28-96" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_jitter</span>(<span class="at">width =</span> <span class="fl">0.25</span>, <span class="at">height =</span> <span class="fl">0.5</span>) <span class="sc">+</span> </span>
+<span id="cb28-97"><a href="#cb28-97" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Total Health Spending vs. Median Age From 1994-2009&quot;</span>,</span>
+<span id="cb28-98"><a href="#cb28-98" aria-hidden="true" tabindex="-1"></a>       <span class="at">subtitle =</span> <span class="st">&quot;Health Spending&quot;</span>,</span>
+<span id="cb28-99"><a href="#cb28-99" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">&quot;Median Age&quot;</span>,</span>
+<span id="cb28-100"><a href="#cb28-100" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">&quot;&quot;</span>,</span>
+<span id="cb28-101"><a href="#cb28-101" aria-hidden="true" tabindex="-1"></a>       <span class="at">color =</span> <span class="st">&quot;Year:&quot;</span>) <span class="sc">+</span></span>
+<span id="cb28-102"><a href="#cb28-102" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span>
+<span id="cb28-103"><a href="#cb28-103" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb28-104"><a href="#cb28-104" aria-hidden="true" tabindex="-1"></a>After coloring by year, we can see that within each of the shades of blue, the correlation appears to be pretty similar, so the relationship between amount spent on health and median age has not changed much form 1994-2009. </span>
+<span id="cb28-105"><a href="#cb28-105" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-106"><a href="#cb28-106" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-107"><a href="#cb28-107" aria-hidden="true" tabindex="-1"></a><span class="fu">## Fitting a Simple Linear Model (Part 2.2)</span></span>
+<span id="cb28-110"><a href="#cb28-110" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb28-111"><a href="#cb28-111" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> <span class="fu">lm</span>(healthCost <span class="sc">~</span> median_age,</span>
+<span id="cb28-112"><a href="#cb28-112" aria-hidden="true" tabindex="-1"></a>            <span class="at">data =</span> ageHealth)</span>
+<span id="cb28-113"><a href="#cb28-113" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-114"><a href="#cb28-114" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb28-115"><a href="#cb28-115" aria-hidden="true" tabindex="-1"></a>We are fitting a linear relationship using median age to predict total health spending per person. So the x variable is median age and the y variable is total health spending.</span>
+<span id="cb28-116"><a href="#cb28-116" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-119"><a href="#cb28-119" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb28-120"><a href="#cb28-120" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(broom)</span>
+<span id="cb28-121"><a href="#cb28-121" aria-hidden="true" tabindex="-1"></a><span class="fu">tidy</span>(model)</span>
+<span id="cb28-122"><a href="#cb28-122" aria-hidden="true" tabindex="-1"></a><span class="fu">augment</span>(model) <span class="sc">|&gt;</span></span>
+<span id="cb28-123"><a href="#cb28-123" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> median_age, <span class="at">y =</span> .resid)) <span class="sc">+</span></span>
+<span id="cb28-124"><a href="#cb28-124" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb28-125"><a href="#cb28-125" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_jitter</span>()</span>
+<span id="cb28-126"><a href="#cb28-126" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb28-127"><a href="#cb28-127" aria-hidden="true" tabindex="-1"></a>Model:</span>
+<span id="cb28-128"><a href="#cb28-128" aria-hidden="true" tabindex="-1"></a>predicted total health spending / person = -1745 + 95.4(median age)</span>
+<span id="cb28-129"><a href="#cb28-129" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-130"><a href="#cb28-130" aria-hidden="true" tabindex="-1"></a>For every one year increase in median age, there is a 95.4 USD increase in total health spending per person.</span>
+<span id="cb28-131"><a href="#cb28-131" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-132"><a href="#cb28-132" aria-hidden="true" tabindex="-1"></a><span class="fu">## Model Fit (2.3)</span></span>
+<span id="cb28-135"><a href="#cb28-135" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb28-136"><a href="#cb28-136" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(moderndive)</span>
+<span id="cb28-137"><a href="#cb28-137" aria-hidden="true" tabindex="-1"></a>var <span class="ot">&lt;-</span> model <span class="sc">|&gt;</span></span>
+<span id="cb28-138"><a href="#cb28-138" aria-hidden="true" tabindex="-1"></a>  <span class="fu">get_regression_points</span>() <span class="sc">|&gt;</span></span>
+<span id="cb28-139"><a href="#cb28-139" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">SSTotal =</span> <span class="fu">var</span>(healthCost),</span>
+<span id="cb28-140"><a href="#cb28-140" aria-hidden="true" tabindex="-1"></a>            <span class="at">SSModel =</span> <span class="fu">var</span>(healthCost_hat),</span>
+<span id="cb28-141"><a href="#cb28-141" aria-hidden="true" tabindex="-1"></a>            <span class="at">SSError =</span> <span class="fu">var</span>(residual))</span>
+<span id="cb28-142"><a href="#cb28-142" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-143"><a href="#cb28-143" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(var, <span class="st">&quot;html&quot;</span>,</span>
+<span id="cb28-144"><a href="#cb28-144" aria-hidden="true" tabindex="-1"></a>             <span class="at">caption =</span> <span class="st">&quot;Variance of Model&quot;</span>,</span>
+<span id="cb28-145"><a href="#cb28-145" aria-hidden="true" tabindex="-1"></a>              <span class="at">col.names =</span> <span class="fu">c</span>(<span class="st">&quot;SSTotal&quot;</span>, <span class="st">&quot;SSModel&quot;</span>, <span class="st">&quot;SSError&quot;</span>),</span>
+<span id="cb28-146"><a href="#cb28-146" aria-hidden="true" tabindex="-1"></a>             )</span>
+<span id="cb28-147"><a href="#cb28-147" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb28-148"><a href="#cb28-148" aria-hidden="true" tabindex="-1"></a>In the table, we can see that 604462.2/1490797 * 100 = 40.5% of the variation in Health Costs is explained by the median age of the country. The R^2^ value is moderately large, which indicates our model has an adequate fit when comparing total healthcare costs and median age.</span>
 </code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->

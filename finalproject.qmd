@@ -22,7 +22,6 @@ library(tidyverse)
 library(here)
 ```
 
-## Read in data
 ```{r}
 age <- read.csv(here::here("stat331-final-project", "median_age_years.csv"))
 health <- read.csv(here::here("stat331-final-project", "total_health_spending_per_person_us.csv"))
@@ -34,6 +33,9 @@ Our response variable will be Total health spending / person USD which can be de
 Our observational variable will be the median age of the total population in each country since 1949. It also includes predicted median age until 2099.
 
 We expect the relationship between average spending per person and median age to be positive because as the population becomes increasingly older on average, people will require more medical attention. We would also expect both the total health spending per person and the median age to increase with time.
+
+
+Some cleaning needed to be done in order to make the data easier to work with.
 
 ## Pivot and Clean Data
 ```{r}
@@ -53,15 +55,12 @@ Because the variable name started with a number, "X" was added before each year 
 
 Otherwise, no other data needed to be cleaned here.
 
-## Join data
 ```{r}
 ageHealth <- health_long |>
   left_join(age_long, by = c("country", "year"))
 ```
 We decided to perform a left join between health_long and age_long, since the total health spending has less observation, and in turn, decrease the amount of missing values.
 
-
-## 2.1 Data Visualization Part One
 ```{r}
 ageHealth |>
   ggplot(aes(y=healthCost,
@@ -71,11 +70,11 @@ ageHealth |>
        subtitle = "Health Spending",
        x = "Median Age",
        y = "") +
+  geom_smooth(method = "lm") +
   theme_bw()
 ```
 Based on the scatter plot above, our assumption was correct and there does appear to be a positive correlation between amount spent on health and median age. As the median age increases, the average amount spent on health does as well. Although the correlation appears to be positive, it does not appear linear.
 
-## 2.1 Data Visualization Part Two
 ```{r}
 ageHealth |>
   ggplot(aes(y=healthCost,
@@ -91,8 +90,8 @@ ageHealth |>
 ```
 After coloring by year, we can see that within each of the shades of blue, the correlation appears to be pretty similar, so the relationship between amount spent on health and median age has not changed much form 1994-2009. 
 
+Note: Although the data do not seem to be following a linear relationship based on the data visualizations above, we will use a linear relationship for the purposes of the project.
 
-## Fitting a Simple Linear Model (Part 2.2)
 ```{r}
 model <- lm(healthCost ~ median_age,
             data = ageHealth)
@@ -100,20 +99,16 @@ model <- lm(healthCost ~ median_age,
 ```
 We are fitting a linear relationship using median age to predict total health spending per person. So the x variable is median age and the y variable is total health spending.
 
+
 ```{r}
 library(broom)
 tidy(model)
-augment(model) |>
-  ggplot(aes(x = median_age, y = .resid)) +
-  geom_point() +
-  geom_jitter()
 ```
 Model:
 predicted total health spending / person = -1745 + 95.4(median age)
 
-For every one year increase in median age, there is a 95.4 USD increase in total health spending per person.
+For every one year increase in median age, there is a 95.4 USD increase in expected total health spending per person. A country with median age 0 has an expected total health spending per person of -1745 USD.
 
-## Model Fit (2.3)
 ```{r}
 library(moderndive)
 var <- model |>
