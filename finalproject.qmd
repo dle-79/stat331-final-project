@@ -77,15 +77,16 @@ Based on the scatter plot above, our assumption was correct and there does appea
 
 ```{r}
 ageHealth |>
+  group_by(year) |>
   ggplot(aes(y=healthCost,
-             x=median_age,
-             color=year)) +
+             x=median_age)) +
   geom_jitter(width = 0.25, height = 0.5) + 
+  facet_wrap(~year) +
   labs(title = "Total Health Spending vs. Median Age From 1994-2009",
        subtitle = "Health Spending",
        x = "Median Age",
-       y = "",
-       color = "Year:") +
+       y = "") +
+  geom_smooth(method = "lm") +
   theme_bw()
 ```
 After coloring by year, we can see that within each of the shades of blue, the correlation appears to be pretty similar, so the relationship between amount spent on health and median age has not changed much form 1994-2009. 
@@ -124,4 +125,92 @@ knitr::kable(var, "html",
 ```
 In the table, we can see that 604462.2/1490797 * 100 = 40.5% of the variation in Health Costs is explained by the median age of the country. The R^2^ value is moderately large, which indicates our model has an adequate fit when comparing total healthcare costs and median age.
 
-hi
+## Making Predictions
+Get simulated data
+```{r}
+model_predict <- predict(model)
+model_sigma <- sigma(model)
+
+noise <- function(x, mean = 0, sd){
+  x + rnorm(length(x), 
+            mean, 
+            sd)
+}
+
+sim_response <- tibble(sim_healthCost = noise(model_predict, 
+                                           sd = model_sigma)
+                   )
+
+sim_data <- ageHealth |> 
+  filter(!is.na(healthCost), 
+         !is.na(median_age)
+         ) |> 
+  select(healthCost, median_age) |> 
+  bind_cols(sim_response)
+```
+
+Side by Side Plots
+```{r}
+obs_reg_p <- ageHealth |>
+  ggplot(aes(y=healthCost,
+             x=median_age)) +
+  geom_point() +
+  labs(title = "Total Health Spending vs. Median Age From 1994-2009",
+       subtitle = "Health Spending",
+       x = "Median Age",
+       y = "") +
+  geom_smooth(method = "lm") +
+  theme_bw()
+
+sim_reg_p <-sim_data |>
+  ggplot(aes(y=sim_healthCost,
+             x=median_age)) +
+  geom_point() +
+  labs(title = "Total Health Spending vs. Median Age From 1994-2009",
+       subtitle = "Simulate Health Spending",
+       x = "Median Age",
+       y = "") +
+  geom_smooth(method = "lm") +
+  theme_bw()
+
+obs_reg_p + sim_reg_p
+
+```
+
+
+Distribution of r^2^ values
+```{r}
+nsims <- 1000
+sims <- map_dfc(.x = 1:nsims,
+                .f = ~ tibble(sim = noise(model_predict, 
+                                          sd = model_sigma)
+                              )
+                )
+
+colnames(sims) <- colnames(sims) |> 
+  str_replace(pattern = "\\.\\.\\.",
+                  replace = "_")
+
+sims <- ageHealth |> 
+  filter(!is.na(healthCost), 
+         !is.na(median_age)
+         ) |> 
+  select(healthCost, median_age) |> 
+  bind_cols(sims)
+
+sim_r_sq <- sims |> 
+  map(~ lm(healthCost ~ .x, data = sims)) |> 
+  map(glance) |> 
+  map_dbl(~ .x$r.squared)
+sim_r_sq <- sim_r_sq[names(sim_r_sq) != "healthCost"]
+
+tibble(sims= sim_r_sq) |> 
+  ggplot(aes(x = sims)) + 
+  geom_histogram(binwidth = 0.01) +
+  xlim(0.125, 0.2) +
+  labs(x = expression("Simulated"~ R^2),
+       y = "",
+       subtitle = "Number of Simulated Models") +
+  theme_bw()
+```
+
