@@ -24,8 +24,8 @@ library(here)
 
 ## Read in data
 ```{r}
-age <- read.csv(here::here("stat331-final-project", "median_age_years.csv"))
-health <- read.csv(here::here("stat331-final-project", "total_health_spending_per_person_us.csv"))
+age <- read.csv("/Users/dylanle/Desktop/stat331/stat331-final-project/median_age_years.csv")
+health <- read.csv("/Users/dylanle/Desktop/stat331/stat331-final-project/total_health_spending_per_person_us.csv")
 ```
 We will be using the two quantitative variables Total health spending per person in USD and median age, all of which came from Gapminder.
 
