@@ -176,7 +176,7 @@ sim_reg_p <-sim_data |>
 obs_reg_p + sim_reg_p
 
 ```
-
+Based on the side by side plots above, our observed data appears to have a much more exponential form compared to our simulated data. Another major difference is that in our simulated data, there are negative values for the simulated health spending, but obviously it isn't possible to spend negative money on something, so our observed data does not go below 0 in terms of health spending. 
 
 Distribution of r^2^ values
 ```{r}
@@ -213,4 +213,4 @@ tibble(sims= sim_r_sq) |>
        subtitle = "Number of Simulated Models") +
   theme_bw()
 ```
-
+Based on the histogram of our simulated R^2 values, we see that our values ranged from 0.13 to 0.19, with the majority of the R^2 values having a value between 0.16 and 0.17. This means that in our simulated data, 13-19% of the variation in health spending can be explained by median age. The simulated R^2 values are relatively small, which means that the majority of the variation in health spending is caused by an unexplained source. 
