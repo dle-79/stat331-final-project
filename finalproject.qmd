@@ -20,10 +20,12 @@ Load Packages
 ```{r}
 library(tidyverse)
 library(here)
+library(moderndive)
+library(broom)
 library(patchwork)
 ```
 
-## Section One: Reading and Cleaning Data
+## Reading and Cleaning Data
 ```{r}
 # Read in data
 age <- read.csv("/Users/dylanle/Desktop/stat331/stat331-final-project/median_age_years.csv")
@@ -105,7 +107,6 @@ model <- lm(healthCost ~ median_age,
 
 We are fitting a linear relationship using median age to predict total health spending per person, where the x variable is median age and the y variable is the predicted total health spending per person.
 ```{r}
-library(broom)
 knitr::kable(tidy(model), 
              "html",
              caption = "Table 1: Linear Regression Model of Total Healthcare 
@@ -118,7 +119,6 @@ For every one year increase in median age, there is a 95.45 USD increase in the 
 
 Now, let's see how well the regression equation fits the data.
 ```{r}
-library(moderndive)
 var <- model |>
   get_regression_points() |>
   summarize(SSTotal = var(healthCost),
@@ -129,15 +129,15 @@ var <- model |>
 knitr::kable(var, 
              "html",
              caption = "Table 2: Variance of Linear Regression Model",
-             col.names = c("SSTotal", "SSModel", "SSError", "R^2^")
+             col.names = c("SSTotal", "SSModel", "SSError", "R Squared")
              )
 ```
-SSTotal is a measure of the total variation be
+SSTotal is a measure of the total variation in the dataset. SSModel is a measure of the variation in total health care costs per person that is explained by the regression line. SSError is a measure of the variation in the dependent variable that is not explained the model. R^2^ is a proportion of the variation in the dependent variable that can be explained by the independent variable, and it can be found by dividing the SSModel by the SSTotal.
 
-In the table, we can see that 40.5% of the variation in Health Costs is explained by the median age of the country. The R^2^ value is moderately large, which indicates our model has an adequate fit when comparing total healthcare costs and median age.
+In Table 2, we can see that 40.5% of the variation in total healthcare costs per person is explained by the median age of the country. The R^2^ value is moderately large, which indicates our model has an adequate fit when comparing total healthcare costs and median age.This makes sense becauses in Figure 1, we can see many points are still condensed near the linear regression line, indicating some fit, but high outliers where the total spending per person is greater than $4,000 demonstrates some of data not fitting as well.
 
-## Making Predictions
-Get simulated data
+## Assessing the Model through Simulation
+First, we will simulate other samples of the data. We will do this by adding "noise" to the data by taking each data point, simulating some error from a normal distribution, and adding to the data point to get a new distribution.
 ```{r}
 model_predict <- predict(model)
 model_sigma <- sigma(model)
@@ -160,15 +160,15 @@ sim_data <- ageHealth |>
   bind_cols(sim_response)
 ```
 
-Side by Side Plots
+Now, we will see how the simulated data compares to our observed values. We will do this by creating a scatterplot of both relationships.
 ```{r}
 obs_reg_p <- ageHealth |>
   ggplot(aes(y=healthCost,
              x=median_age)) +
   geom_point() +
-  labs(title = "Total Health Spending vs. Median Age From 1994-2009",
-       subtitle = "Health Spending",
-       x = "Median Age",
+  labs(title = "Figure 1: Total Health Spending vs. Median Age",
+       subtitle = "Health Spending (USD)",
+       x = "Median Age (years)",
        y = "") +
   geom_smooth(method = "lm") +
   theme_bw()
@@ -177,9 +177,9 @@ sim_reg_p <-sim_data |>
   ggplot(aes(y=sim_healthCost,
              x=median_age)) +
   geom_point() +
-  labs(title = "Total Health Spending vs. Median Age From 1994-2009",
-       subtitle = "Simulate Health Spending",
-       x = "Median Age",
+  labs(title = "Figure 3: Simulated Total Health Spending vs. Median Age",
+       subtitle = "Simulated Health Spending (USD)",
+       x = "Median Age (years)",
        y = "") +
   geom_smooth(method = "lm") +
   theme_bw()
@@ -189,9 +189,11 @@ sim_reg_p <-sim_data |>
 obs_reg_p + sim_reg_p
 
 ```
-Based on the side by side plots above, our observed data appears to have a much more exponential form compared to our simulated data. Another major difference is that in our simulated data, there are negative values for the simulated health spending, but obviously it isn't possible to spend negative money on something, so our observed data does not go below 0 in terms of health spending. 
+Based on the side by side plots above, our observed data appears to have a much more exponential form compared to our simulated data. Another major difference is that in our simulated data, there are negative values for the simulated health spending, but it isn't possible to spend negative money on something, so our observed data does not go below 0 in terms of health spending. 
 
-Distribution of r^2^ values
+Figures 1 and 3 appear to have the same regression lines, but the residuals, or differences between the observed values and predicted values on the regression line, from each graph appear to differ. In our observed data in Figure 1, there appears to be a higher count negative residuals, but it's smaller in magnitude, indicated by many of the points being closer to line. Conversely, there are a fewer quantity of positive residual values, which are values above the regression line, but there are a farther distance away. In figure 3, the positive and negative residuals appear to be evenly dispersed, where most are concentrated near the regression line and is evenly distributed as it gets further from the line. This indicates potential evidence that our observed data doesn't follow a normal distribution. 
+
+Finally, let's see how our observed data matches the predicted values if we simulate it many times. We will do this by finding the R^2^ values of 1000 simulated models. The R^2^ value indicates how well the assumed model can produce data that is similar to the observed values. The greater the R^2^ value, the more similar the model is to our data.
 ```{r}
 nsims <- 1000
 sims <- map_dfc(.x = 1:nsims,
@@ -223,7 +225,8 @@ tibble(sims= sim_r_sq) |>
   xlim(0.125, 0.2) +
   labs(x = expression("Simulated"~ R^2),
        y = "",
+       title = "Figure 4: R-Squared Values from Simulated Models",
        subtitle = "Number of Simulated Models") +
   theme_bw()
 ```
-Based on the histogram of our simulated R^2 values, we see that our values ranged from 0.13 to 0.19, with the majority of the R^2 values having a value between 0.16 and 0.17. This means that in our simulated data, 13-19% of the variation in health spending can be explained by median age. The simulated R^2 values are relatively small, which means that the majority of the variation in health spending is caused by an unexplained source. 
+Based on Figure 4, we see that our values ranged from 0.13 to 0.19, with the majority of the R^2^ values range between 0.16 and 0.17. This means that on average, the simulated data accounts for approximately 16% of the variability in the observed total healthcare spending per person. This means that the simulated data from the model is not very similar to what was observed, indicating a weak model.
