@@ -16,17 +16,20 @@ execute:
   warning: false
 ---
 
-## Load packages
+Load Packages
 ```{r}
 library(tidyverse)
 library(here)
+library(patchwork)
 ```
 
+## Section One: Reading and Cleaning Data
 ```{r}
+# Read in data
 age <- read.csv("/Users/dylanle/Desktop/stat331/stat331-final-project/median_age_years.csv")
 health <- read.csv("/Users/dylanle/Desktop/stat331/stat331-final-project/total_health_spending_per_person_us.csv")
 ```
-We will be using the two quantitative variables Total health spending per person in USD and median age, all of which came from Gapminder.
+We will be using the two quantitative variables, total health spending per person in USD and median age, all of which came from Gapminder.
 
 Our response variable will be Total health spending / person USD which can be described as the average amount spent per person in USD for every country from 1994 to 2009 according to the World Health Organization.
 
@@ -37,7 +40,6 @@ We expect the relationship between average spending per person and median age to
 
 Some cleaning needed to be done in order to make the data easier to work with.
 
-## Pivot and Clean Data
 ```{r}
 age_long <- age |>
   pivot_longer(cols = X1949:X2099,
@@ -53,28 +55,29 @@ health_long <- health |>
 ```
 Because the variable name started with a number, "X" was added before each year automatically by R. As a consequence, the year was changed into a categorical variable. Thus, after pivoting, I removed the "X" from each year and converted it into an integer.
 
-Otherwise, no other data needed to be cleaned here.
-
 ```{r}
 ageHealth <- health_long |>
   left_join(age_long, by = c("country", "year"))
 ```
 We decided to perform a left join between health_long and age_long, since the total health spending has less observation, and in turn, decrease the amount of missing values.
 
+## Linear Regression
+First, we will create a scatterplot to see the relationship between total health spending per person and median age.
 ```{r}
 ageHealth |>
   ggplot(aes(y=healthCost,
              x=median_age)) +
   geom_jitter(width = 0.25, height = 0.5) +
-  labs(title = "Total Health Spending vs. Median Age From 1994-2009",
-       subtitle = "Health Spending",
-       x = "Median Age",
+  labs(title = "Figure 1: Total Health Spending vs. Median Age",
+       subtitle = "Health Spending (USD)",
+       x = "Median Age (years)",
        y = "") +
   geom_smooth(method = "lm") +
   theme_bw()
 ```
-Based on the scatter plot above, our assumption was correct and there does appear to be a positive correlation between amount spent on health and median age. As the median age increases, the average amount spent on health does as well. Although the correlation appears to be positive, it does not appear linear.
+Based on Figure 1, our assumption was correct and there does appear to be a positive correlation between amount spent on health and median age. As the median age increases, the average amount spent on health does as well, which agrees with our hypothesis. Although the correlation appears to be positive, it does not appear linear. One reason this could occur is that total health care spending is bounded at 0. This is likely because many countries are less wealthy, so they may not be able to spend money on these healthcare products. Even as age increases, citizens in various simply can't afford or don't have the resources to spend more money per person on healthcare. We ca see this where many values hover near 0 in age ranges from 15 to 40. Conversely, other countries overcharge citizens on healthcare, which leads to many points deviating heavily from the regression line. The combination of many points hovering near $0 spent per person on health care and these sharp increases from countries that overcharge create a nonlinear relationship.
 
+Now, let's examine this relationship overtime.
 ```{r}
 ageHealth |>
   group_by(year) |>
@@ -82,48 +85,56 @@ ageHealth |>
              x=median_age)) +
   geom_jitter(width = 0.25, height = 0.5) + 
   facet_wrap(~year) +
-  labs(title = "Total Health Spending vs. Median Age From 1994-2009",
-       subtitle = "Health Spending",
-       x = "Median Age",
+  labs(title = "Figure 2: Total Health Spending vs. Median Age From 1994-2009",
+       subtitle = "Health Spending per person",
+       x = "Median Age (years)",
        y = "") +
   geom_smooth(method = "lm") +
   theme_bw()
 ```
-After coloring by year, we can see that within each of the shades of blue, the correlation appears to be pretty similar, so the relationship between amount spent on health and median age has not changed much form 1994-2009. 
+In order to see the how the relationship has changed over time, we faceted the graph by year (Figure 2). Here, we can see that as time passes, there appears to be a more positive relationship between total health spending per person and median age of a country. This is indicated by the slope of the regression lines on each graph becoming more noticeably steeper. This is likely due to inflation, where as products get more expensive, people will be forced to spend more money on it.
 
-Note: Although the data do not seem to be following a linear relationship based on the data visualizations above, we will use a linear relationship for the purposes of the project.
+Although the data do not seem to be following a linear relationship based on the data visualizations above, we will use a linear relationship for the purposes of the project.
 
+Now, we will fit a linear model model to the data.
 ```{r}
 model <- lm(healthCost ~ median_age,
             data = ageHealth)
 
 ```
-We are fitting a linear relationship using median age to predict total health spending per person. So the x variable is median age and the y variable is total health spending.
 
-
+We are fitting a linear relationship using median age to predict total health spending per person, where the x variable is median age and the y variable is the predicted total health spending per person.
 ```{r}
 library(broom)
-tidy(model)
+knitr::kable(tidy(model), 
+             "html",
+             caption = "Table 1: Linear Regression Model of Total Healthcare 
+             Spending per Person (USD) vs Median age")
 ```
 Model:
-predicted total health spending / person = -1745 + 95.4(median age)
+predicted total health spending / person = -1744.56 + 95.45(median age)
 
-For every one year increase in median age, there is a 95.4 USD increase in expected total health spending per person. A country with median age 0 has an expected total health spending per person of -1745 USD.
+For every one year increase in median age, there is a 95.45 USD increase in the mean expected total health spending per person. A country with median age 0 has an expected mean total health spending per person of -1744.56 USD. Because the intercept value of -1744.56 is negative, this indicates that the regression equation would be poor at making predictions at smaller ages. This is because it is nonsensical to have a negative total spending. However, this negative intercept is necessary in order to fit all of the data best.
 
+Now, let's see how well the regression equation fits the data.
 ```{r}
 library(moderndive)
 var <- model |>
   get_regression_points() |>
   summarize(SSTotal = var(healthCost),
             SSModel = var(healthCost_hat),
-            SSError = var(residual))
+            SSError = var(residual)) |>
+  mutate(rsquare = SSModel/SSTotal)
 
-knitr::kable(var, "html",
-             caption = "Variance of Model",
-              col.names = c("SSTotal", "SSModel", "SSError"),
+knitr::kable(var, 
+             "html",
+             caption = "Table 2: Variance of Linear Regression Model",
+             col.names = c("SSTotal", "SSModel", "SSError", "R^2^")
              )
 ```
-In the table, we can see that 604462.2/1490797 * 100 = 40.5% of the variation in Health Costs is explained by the median age of the country. The R^2^ value is moderately large, which indicates our model has an adequate fit when comparing total healthcare costs and median age.
+SSTotal is a measure of the total variation be
+
+In the table, we can see that 40.5% of the variation in Health Costs is explained by the median age of the country. The R^2^ value is moderately large, which indicates our model has an adequate fit when comparing total healthcare costs and median age.
 
 ## Making Predictions
 Get simulated data
@@ -172,6 +183,8 @@ sim_reg_p <-sim_data |>
        y = "") +
   geom_smooth(method = "lm") +
   theme_bw()
+
+
 
 obs_reg_p + sim_reg_p
 
